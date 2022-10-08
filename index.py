@@ -60,7 +60,7 @@ def f_xi():
         #$checkout
         #!No update
     elif int(cmd) == 3:
-        f_rc_xi()
+        f_rc_xi(acad_yr)
         #! No update
     elif int(cmd) == 4:
         f_panel()
@@ -92,31 +92,49 @@ def f_adm(acad_yr):
 
 def f_enter_adm(acad_yr):
 
-    # stu_no = int(input("Enter Number of Students: "))
+    tb_name = f"adm{acad_yr}"
+
+    try:
+        print('Creating Table...')
+        cur.execute(f'CREATE TABLE {tb_name} (AdmNo int(5) PRIMARY KEY AUTO_INCREMENT, StudentName varchar(25), Mail varchar(25) UNIQUE, DoB date, BirthPlace varchar(25), MotherTongue varchar(20), MotherName varchar(25), FatherName varchar(25), Nationality varchar(25), Caste varchar(5), Address varchar(50), ParentOccupation varchar(25),  ParentOccupationCategory varchar(25), ParentPay int(11), ParentMobile INTEGER, ParentOfficeAddress varchar(50), ParentOfficeTelephone int(10), XLastAttended date, XMedium varchar(10), XBoard varchar(20), XPassYear YEAR, XRollNo int(15), XEng int(3), XMaths int(3), XScience int(3), XSocial int(3), XIILang int(3), XTotalMarks int(3), XPercentage decimal(5,2), Class varchar(3) DEFAULT "XI", Sub varchar(4))')
+        print(f'...Table {tb_name} Created')
+
+        cur.execute(f"ALTER TABLE {tb_name} AUTO_INCREMENT=580")
+        print('...Table Altered')
+    
+    except Error:
+        print('...Table not Created...')
+        cur.execute("SHOW TABLES")
+        for x in cur:
+            # print(x)
+            # print(x[0])
+            # print(tb_name)
+            # print()
+            if x[0] == tb_name:
+                print('...Table already existed')
 
     print('\n+------------------+')
     print('| Personal Details |')
     print('+------------------+')
     
-    #$adm no: start with 580
-    
     stu_name = input("Enter Student's Full Name: ")
     stu_mail = input("Enter Student's Email ID: ")
-    stu_dob = input("Enter Date of Birth: ")
+    stu_dob = input("Enter Date of Birth(FORMAT: YYYY-MM-DD): ")
     stu_bplace = input("Enter Place of Birth: ")
     stu_motong =  input("Enter Mother Tongue: ")
     stu_moname =  input("Enter Mother's Name: ")
     stu_faname=  input("Enter Father's Name: ")
     stu_nat = input("Enter Nationality: ")
-    stu_caste = input("Enter Students Caste: ")
+    stu_caste = input("Enter Students Caste(SC/ST/OBC/Gen): ")
     stu_add = input("Enter Students Address: ")
     
 
-    print('\n+------------------+')
+    print('\n+-----------------+')
     print('| Parents Details |')
-    print('+------------------+')
+    print('+-----------------+')
     
     pa_occ = input("Enter Parent's Occupation: ")
+    pa_occcat = input("Enter Parent's Occupation Category(DAE/NON-DAE): ")
     pa_pay = int(input("Enter Annual Income: "))
     pa_mob = int(input("Enter Parent's Mobile Number: "))
     pa_oadd = input("Enter Office Address: ")
@@ -124,14 +142,14 @@ def f_enter_adm(acad_yr):
     
 
 
-    print('\n+------------------+')
+    print('\n+----------------+')
     print('| Class X Details |')
-    print('+------------------+')
+    print('+-----------------+')
     
-    x_lastatt = input("Enter School Last Attended: ")
+    x_lastatt = input("Enter School Last Attended(FORMAT: YYYY-MM-DD): ")
     x_med = input("Enter Medium Of Instruction: ")
     x_board = input("Enter Examination Board: ")
-    x_passyr = int(input("Enter Passing Year: "))
+    x_passyr = int(input("Enter Passing Year(FORMAT: YYYY): "))
     x_rollno = int(input("Enter Board Roll Number: "))
     x_eng = int(input("Enter marks obtained in English: "))
     x_maths = int(input("Enter marks obtained in Maths: "))
@@ -143,75 +161,76 @@ def f_enter_adm(acad_yr):
 
     f_display(sub_c)
     sub_choice = input("Enter Sub Choice(1/2): ")
+    if sub_choice == "2":
+        sub_choice = "Bio"
+    else:
+        sub_choice = "CS"
 
-    adm_list = []
+    # try:
+    # cur.execute(f'''INSERT INTO {tb_name} (StudentName, Mail, DoB, BirthPlace, MotherTongue, MotherName, FatherName, Nationality, Caste, Address, ParentOccupation, ParentPay, ParentMobile, ParentOfficeAddress, ParentOfficeTelephone, XLastAttended, XMedium, XBoard, XPassYear, XRollNo, XEng, XMaths, XScience, XSocial, XIILang, XTotalMarks, XPercentage, Sub) VALUES ({stu_name}, {stu_mail}, {stu_dob}, {stu_bplace}, {stu_motong}, {stu_moname},{stu_faname}, {stu_nat}, {stu_caste}, {stu_add}, {pa_occ}, {pa_pay}, {pa_mob}, {pa_oadd}, {pa_otel}, {x_lastatt}, {x_med}, {x_board}, {x_passyr}, {x_rollno}, {x_eng}, {x_maths},{x_sci}, {x_ss}, {x_2lang}, {x_totmrks}, {x_per}, {sub_choice})''')
+
+    qry = 'INSERT INTO {} (StudentName, Mail, DoB, BirthPlace, MotherTongue, MotherName, FatherName, Nationality, Caste, Address, ParentOccupation, ParentOccupationCategory, ParentPay, ParentMobile, ParentOfficeAddress, ParentOfficeTelephone, XLastAttended, XMedium, XBoard, XPassYear, XRollNo, XEng, XMaths, XScience, XSocial, XIILang, XTotalMarks, XPercentage, Sub) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ,%s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s ,%s, %s, %s, %s, %s, %s)'.format(tb_name)
+
+    val = (stu_name, stu_mail, stu_dob, stu_bplace, stu_motong, stu_moname,stu_faname, stu_nat, stu_caste, stu_add, pa_occ,pa_occcat, pa_pay, pa_mob, pa_oadd, pa_otel, x_lastatt, x_med, x_board, x_passyr, x_rollno, x_eng, x_maths,x_sci, x_ss, x_2lang, x_totmrks, x_per, sub_choice)
+
+    cur.execute(qry, val)#29
+    mydb.commit()
+    print(f'\n...Welcome, {stu_name} to AECS-3, Tarapur\n')
+
+    qry = 'SELECT MAX(AdmNo) FROM {}'.format(tb_name)
+    cur.execute(qry)
+    res = cur.fetchone()
+    print(f'\nYour Admission Number is: {res}\n')
+
+
+    choice = input('Want to enter data for one more student? (Yes/No): ')
+    if choice.lower() == "yes":
+        f_enter_adm(acad_yr)
+    elif choice.lower() == "no":
+        f_adm(acad_yr)
+    else:
+        f_adm(acad_yr)
+
+    # except Error:
+    #     print('table error')
+    #     cur.execute("SHOW TABLES")
+    #     for x in cur:
+    #         print(x)
+    #         print()
+    #         if x[0] == f'adm{acad_yr}':
+    #             cur.execute(f'''INSERT INTO {tb_name} (StudentName, Mail, DoB, BirthPlace, MotherTongue, MotherName, MotherName, FatherName, Nationaity, Caste, Address, ParentOccupation, ParentPay, ParentMobile, ParentOfficeAddress, ParentOfficeTelephone, XLastAttended, XMedium, XBoard, XPassYear, XRollNo, XEng, XMaths, XScience, XSocial, XIILang, XTotalMarks, XPercentage, Sub) VALUES ({stu_name, stu_mail,stu_dob,stu_bplace,stu_motong,stu_moname,stu_faname,stu_nat,stu_caste,stu_add,pa_occ,pa_pay,pa_mob,pa_oadd,pa_otel,x_lastatt,x_med,x_board,x_passyr,x_rollno,x_eng,x_maths,x_sci,x_ss,x_2lang,x_totmrks,x_per,sub_choice})''')
+    #             choice = input('Want to enter data for one more student? (Yes/No): ')
+    #             if choice.lower() == "yes":
+    #                 f_enter_adm(acad_yr)
+    #             elif choice.lower() == "no":
+    #                 pass
+    #             else:
+    #                 pass
+
+def f_rc_xi(acad_yr):
+
+    tb_name = f'rc{acad_yr}'
+
+    # try:
+    #     print('Creating Table...')
+    #     cur.execute(f'CREATE TABLE {tb_name} (AdmNo int(5) PRIMARY KEY AUTO_INCREMENT, )')
+    #     print(f'...Table {tb_name} Created')
+
+    #     # cur.execute(f"ALTER TABLE {tb_name} AUTO_INCREMENT=580")
+    #     # print('...Table Altered')
     
-    tb_name = "adm{acad_yr}"
-    
-    try:
-        cur.execute(f'''CREATE TABLE {tb_name} 
-        (AdmNo int(5) PRIMARY KEY AUTO_INCREMENT, 
-        StudentName varchar(25), 
-        Mail varchar(25) UNIQUE, 
-        DoB date, 
-        BirthPlace varchar(25), 
-        MotherTongue varchar(20), 
-        MotherName varchar(25), 
-        FatherName varchar(25), 
-        Nationality varchar(25), 
-        Caste varchar(5), 
-        Address varchar(50), 
-        ParentOccupation varchar(25), 
-        ParentPay int(10), 
-        ParentMobile int(10), 
-        ParentOfficeAddress varchar(50), 
-        ParentOfficeTelephone int(10), 
-        XLastAttended date, 
-        XMedium varchar(10), 
-        XBoard varchar(20), 
-        XPassYear YEAR, 
-        XRollNo int(15), 
-        XEng int(3), 
-        XMaths int(3), 
-        XScience int(3), 
-        XSocial int(3), 
-        XIILang int(3), 
-        XTotalMarks int(3), 
-        XPercentage decimal(5,2), 
-        Class varchar(3) DEFAULT \"XI\", 
-        Sub varchar(4))''')
-        print('creating table...')
+    # except Error:
+    #     print('...Table not Created...')
+    #     cur.execute("SHOW TABLES")
+    #     for x in cur:
+    #         # print(x)
+    #         # print(x[0])
+    #         # print(tb_name)
+    #         # print()
+    #         if x[0] == tb_name:
+    #             print('...Table already existed')
 
-        cur.execute("ALTER TABLE {tb_name} AUTO_INCREMENT=580")
-        
-        cur.execute(f'''INSERT INTO {tb_name} (StudentName, Mail, DoB, BirthPlace, MotherTongue, MotherName, MotherName, FatherName, Nationaity, Caste, Address, ParentOccupation, ParentPay, ParentMobile, ParentOfficeAddress, ParentOfficeTelephone, XLastAttended, XMedium, XBoard, XPassYear, XRollNo, XEng, XMaths, XScience, XSocial, XIILang, XTotalMarks, XPercentage, Sub) VALUES ({stu_name, stu_mail,stu_dob,stu_bplace,stu_motong,stu_moname,stu_faname,stu_nat,stu_caste,stu_add,pa_occ,pa_pay,pa_mob,pa_oadd,pa_otel,x_lastatt,x_med,x_board,x_passyr,x_rollno,x_eng,x_maths,x_sci,x_ss,x_2lang,x_totmrks,x_per,sub_choice})''')
-        #$ INSERT STATEMENT
-        choice = input('Want to enter data for one more student? (Yes/No): ')
-        if choice.lower() == "yes":
-            f_enter_adm(acad_yr)
-        elif choice.lower() == "no":
-            pass
-        else:
-            pass
-
-    except Error:
-        print('table error')
-        cur.execute("SHOW TABLES")
-        for x in cur:
-            print(x)
-            if x == f'adm20{acad_yr}':
-                #$ INSERT statement
-                choice = input('Want to enter data for one more student? (Yes/No): ')
-                if choice.lower() == "yes":
-                    f_enter_adm(acad_yr)
-                elif choice.lower() == "no":
-                    pass
-                else:
-                    pass
-
-def f_rc_xi():
-    print("report card XI")
-    #$ ask for values (input statements)
+    adm_no = input()
     xi_rollno = int(input("Enter Roll Number: "))
     xi_tt1eng = int(input("Enter English marks: "))
     xi_tt1math = int(input("Enter Mathematics marks: "))
@@ -243,9 +262,6 @@ def f_rc_xi():
     
     xi_totalmarks = int(input("Enter Total marks obtained: "))
     xi_perc = int(input("Enter Percentage: "))
-
-
-
 
     xi_we = input("Enter work experience: ")
     xi_gs = input("Enter grade for genral studies: ")
@@ -291,13 +307,16 @@ def f_panel():
 
 #connecting mysql database
 try:
+    print('\nConnecting Database...\n')
     mydb = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
         password = 'mysqlpw',
         database = 'csproj'
     )
+    print('\n...Database Connected\n')
 except Error:
+    print('\n...No database found\n')
     mydb = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
@@ -305,10 +324,12 @@ except Error:
     )
     cur = mydb.cursor()
     cur.execute('CREATE DATABASE csproj')
+    print('\n...Database Created\n')
 
 cur = mydb.cursor()
 
 # Starting Interface
+
 print('\n+--------------+')
 print('| JC REGISTRAL |')
 print('+--------------+')
@@ -343,4 +364,5 @@ sub_c = [['Command', 'Subjects'],
     ['1', 'Physics, Chemistry, Maths, English, Computer Science'],
     ['2', 'Physics, Chemistry, Maths, English, Biology']]
 
+print('\n...Running the panel\n')
 f_panel()
