@@ -96,7 +96,7 @@ def f_enter_adm(acad_yr):
 
     try:
         print('Creating Table...')
-        cur.execute(f'CREATE TABLE {tb_name} (AdmNo int(5) PRIMARY KEY AUTO_INCREMENT, StudentName varchar(25), Mail varchar(25) UNIQUE, DoB date, BirthPlace varchar(25), MotherTongue varchar(20), MotherName varchar(25), FatherName varchar(25), Nationality varchar(25), Caste varchar(5), Address varchar(50), ParentOccupation varchar(25),  ParentOccupationCategory varchar(25), ParentPay int(11), ParentMobile INTEGER, ParentOfficeAddress varchar(50), ParentOfficeTelephone int(10), XLastAttended date, XMedium varchar(10), XBoard varchar(20), XPassYear YEAR, XRollNo int(15), XEng int(3), XMaths int(3), XScience int(3), XSocial int(3), XIILang int(3), XTotalMarks int(3), XPercentage decimal(5,2), Class varchar(3) DEFAULT "XI", Sub varchar(4))')
+        cur.execute(f'CREATE TABLE {tb_name} (AdmNo int(5) PRIMARY KEY AUTO_INCREMENT, StudentName varchar(30), Mail varchar(30) UNIQUE, DoB date, BirthPlace varchar(100), MotherTongue varchar(20), MotherName varchar(30), FatherName varchar(30), Nationality varchar(30), Caste varchar(10), Address varchar(100), ParentOccupation varchar(30),  ParentOccupationCategory varchar(25), ParentPay int(11), ParentMobile varchar(20), ParentOfficeAddress varchar(100), ParentOfficeTelephone int(10), XLastAttended date, XMedium varchar(20), XBoard varchar(20), XPassYear YEAR, XRollNo int(15) UNIQUE, XEng int(3), XMaths int(3), XScience int(3), XSocial int(3), XIILang int(3), XTotalMarks int(3), XPercentage decimal(5,2), Class varchar(5) DEFAULT "XI", Sub varchar(4))')
         print(f'...Table {tb_name} Created')
 
         cur.execute(f"ALTER TABLE {tb_name} AUTO_INCREMENT=580")
@@ -136,7 +136,7 @@ def f_enter_adm(acad_yr):
     pa_occ = input("Enter Parent's Occupation: ")
     pa_occcat = input("Enter Parent's Occupation Category(DAE/NON-DAE): ")
     pa_pay = int(input("Enter Annual Income: "))
-    pa_mob = int(input("Enter Parent's Mobile Number: "))
+    pa_mob = input("Enter Parent's Mobile Number: ")
     pa_oadd = input("Enter Office Address: ")
     pa_otel = int(input("Enter Office Telephone Number: "))
     
@@ -171,8 +171,9 @@ def f_enter_adm(acad_yr):
 
     qry = 'INSERT INTO {} (StudentName, Mail, DoB, BirthPlace, MotherTongue, MotherName, FatherName, Nationality, Caste, Address, ParentOccupation, ParentOccupationCategory, ParentPay, ParentMobile, ParentOfficeAddress, ParentOfficeTelephone, XLastAttended, XMedium, XBoard, XPassYear, XRollNo, XEng, XMaths, XScience, XSocial, XIILang, XTotalMarks, XPercentage, Sub) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ,%s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s ,%s, %s, %s, %s, %s, %s)'.format(tb_name)
 
-    val = (stu_name, stu_mail, stu_dob, stu_bplace, stu_motong, stu_moname,stu_faname, stu_nat, stu_caste, stu_add, pa_occ,pa_occcat, pa_pay, pa_mob, pa_oadd, pa_otel, x_lastatt, x_med, x_board, x_passyr, x_rollno, x_eng, x_maths,x_sci, x_ss, x_2lang, x_totmrks, x_per, sub_choice)
+    val = (stu_name, stu_mail, stu_dob, stu_bplace, stu_motong, stu_moname,stu_faname, stu_nat, stu_caste, stu_add, pa_occ, pa_occcat, pa_pay, pa_mob, pa_oadd, pa_otel, x_lastatt, x_med, x_board, x_passyr, x_rollno, x_eng, x_maths, x_sci, x_ss, x_2lang, x_totmrks, x_per, sub_choice)
 
+    #$ try except statement
     cur.execute(qry, val)#29
     mydb.commit()
     print(f'\n...Welcome, {stu_name} to AECS-3, Tarapur\n')
@@ -180,7 +181,7 @@ def f_enter_adm(acad_yr):
     qry = 'SELECT MAX(AdmNo) FROM {}'.format(tb_name)
     cur.execute(qry)
     res = cur.fetchone()
-    print(f'\nYour Admission Number is: {res}\n')
+    print(f'\nYour Admission Number is: {res[0]}\n')
 
 
     choice = input('Want to enter data for one more student? (Yes/No): ')
