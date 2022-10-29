@@ -4,6 +4,8 @@
 
 JC Registral is a tool created for managing data for the admission process of Junior College(JC) students. (High School Project)
 
+[![Run on Repl.it](https://replit.com/badge/github/varunbaisane/jc-registral)](https://replit.com/new/github/varunbaisane/jc-registral)
+
 [Run Code]() | [View Code](https://github.com/varunbaisane/jc-registral/blob/main/index.py)
 
 ## Features
