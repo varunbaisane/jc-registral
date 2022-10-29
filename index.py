@@ -1,14 +1,11 @@
-
-#*FUNCTIONS
-
 import mysql.connector
 from mysql.connector import Error
 import datetime
 import time
 
+#*FUNCTIONS
 # To display any command list as a a table
 def f_display(l, sec=0):
-
     print()
     length0 = -1
     length1 = -1
@@ -32,29 +29,25 @@ def f_about():
     print('\n+-------+')
     print('| ABOUT |')
     print('+-------+\n')
-
-    print('JC registral is a tool for admission process of Junior College students.')#!ADD GOOD statement
-    
+    print('JC Registral is a tool created for managing data for the admission process of Junior College(JC) students.')
     print('\nDeveloped by:-\n')
     print('\tVarun Baisane    Roll No: 20')
     print('\tAnant Jaiswara   Roll No: 05')
     print('\tSarthak Dale     Roll No: 15')
-
     print('\n© Copyright 2022 | JC Registralᵀᴹ | All Rights Reserved.')
-
+    time.sleep(1)
     f_panel()
 
 # panel to control admission operations
 def f_adm(acad_yr):
     f_display(xi_adm)
-
     cmd = input('\nEnter command:=> ')
 
     if not cmd.isnumeric():
         print('\nEnter valid command\n')
         f_adm(acad_yr)
     elif int(cmd) == 1:
-        f_create_table_adm(acad_yr)
+        f_data_entry_adm(acad_yr)
     elif int(cmd) == 2:
         f_display_adm(acad_yr)
     elif int(cmd) == 3:
@@ -70,30 +63,17 @@ def f_adm(acad_yr):
         f_adm(acad_yr)
 
 # To create table
-def f_create_table_adm(acad_yr):
+def f_create_table_adm():
     tb_name = "admregister"
 
     try:
-        print('Creating Table...')
         cur.execute(f'CREATE TABLE {tb_name} (AdmNo int(5) PRIMARY KEY,JoiningYear int(5), StudentName varchar(30), Mail varchar(30) UNIQUE, DoB date, BirthPlace varchar(100), MotherTongue varchar(20), MotherName varchar(30), FatherName varchar(30), Nationality varchar(30), Caste varchar(10), Address varchar(100), ParentOccupation varchar(30),  ParentOccupationCategory varchar(25), ParentPay int(11), ParentMobile varchar(20), ParentOfficeAddress varchar(100), ParentOfficeTelephone int(10), XLastAttended date, XMedium varchar(20), XBoard varchar(20), XPassYear YEAR, XRollNo int(15) UNIQUE, XEng int(3) DEFAULT 0, XMaths int(3) DEFAULT 0, XScience int(3) DEFAULT 0, XSocial int(3) DEFAULT 0, XIILang int(3) DEFAULT 0, XTotalMarks int(3) DEFAULT 0, XPercentage decimal(5,2) DEFAULT 0, Status varchar(5) DEFAULT "XI", Sub varchar(4))')
-        print(f'...Table {tb_name} Created')
-    
     except Error:
-        print('...Table not Created...')
-        cur.execute("SHOW TABLES")
-        for x in cur:
-            print(x)
-            print(x[0])
-            # print(tb_name)
-            # print()
-            if x[0] == tb_name:
-                print('...Table already existed')
-
-    f_data_entry_adm(acad_yr)
+        # Table already existed
+        pass
 
 # To enter all required data
 def f_data_entry_adm(acad_yr):
-
     print('\n+------------------+')
     print('| Personal Details |')
     print('+------------------+')
@@ -106,25 +86,25 @@ def f_data_entry_adm(acad_yr):
     stu_moname =  input("Enter Mother's Name: ")
     stu_faname=  input("Enter Father's Name: ")
     stu_nat = input("Enter Nationality: ")
-    stu_caste = input("Enter Students Caste(SC/ST/OBC/Gen): ")
-    stu_add = input("Enter Students Address: ")
+    stu_caste = input("Enter Student's Caste(SC/ST/OBC/Gen): ")
+    stu_add = input("Enter Student's Address: ")
 
     print('\n+-----------------+')
     print('| Parents Details |')
     print('+-----------------+')
 
-    pa_occ = input("Enter Parent's Occupation: ")
-    pa_occcat = input("Enter Parent's Occupation Category(DAE/NON-DAE): ")
-    pa_pay = int(input("Enter Annual Income: "))
-    pa_mob = input("Enter Parent's Mobile Number: ")
-    pa_oadd = input("Enter Office Address: ")
-    pa_otel = int(input("Enter Office Telephone Number: "))
+    pa_occ = input("Enter Parents' Occupation: ")
+    pa_occcat = input("Enter Parents' Occupation Category(DAE/NON-DAE): ")
+    pa_pay = int(input("Enter Parents' Annual Income: "))
+    pa_mob = input("Enter Parents' Mobile Number: ")
+    pa_oadd = input("Enter Parents' Office Address: ")
+    pa_otel = int(input("Enter Parents' Office Telephone Number: "))
 
-    print('\n+----------------+')
+    print('\n+-----------------+')
     print('| Class X Details |')
     print('+-----------------+')
 
-    x_lastatt = input("Enter School Last Attended(FORMAT: YYYY-MM-DD): ")
+    x_lastatt = input("Enter School Last Attended Date(FORMAT: YYYY-MM-DD): ")
     x_med = input("Enter Medium Of Instruction: ")
     x_board = input("Enter Examination Board: ")
     x_passyr = int(input("Enter Passing Year(FORMAT: YYYY): "))
@@ -143,7 +123,6 @@ def f_data_entry_adm(acad_yr):
         sub_choice = "BIO"
     else:
         sub_choice = "CS"
-
     adm_no = 580
 
     adm_data = {
@@ -299,7 +278,6 @@ def f_display_section(l):
 
 # To create admission data readable for f_display_section()
 def f_display_adm(acad_yr):
-
     tb_name = "admregister"
 
     #display table of admno and name
@@ -350,7 +328,7 @@ def f_display_adm(acad_yr):
                 par_data = bigdata[:1] + bigdata[2:3] + bigdata[11:18]
                 f_display_section(par_data)
                 
-                print('\n+----------------+')
+                print('\n+-----------------+')
                 print('| Class X Details |')
                 print('+-----------------+')
                 X_data = bigdata[:1] + bigdata[2:3] + bigdata[18:]
@@ -393,113 +371,113 @@ def f_update_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
-        f_update_adm(acad_yr)
+        f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
         f_display(res)
         print()
 
-    adm_no = input('\nEnter Admission Number to Update Data of the Student:=> ')
+        adm_no = input('\nEnter Admission Number to Update Data of the Student:=> ')
 
-    f_display(adm_up, 0.025)
+        f_display(adm_up, 0.025)
 
-    cmd = input('\nEnter command to change Data:=> ')
+        cmd = input('\nEnter command to change Data:=> ')
 
-    if not cmd.isnumeric():
-        print('\nEnter valid command\n')
-        f_update_adm()
-    elif int(cmd) == 1:
-        col_val = input('Enter new Joining Year:=> ')
-        f_update_stm('JoiningYear', col_val, adm_no)
-    elif int(cmd) == 2:
-        col_val = input('Enter new Student Name:=> ')
-        f_update_stm('StudentName', col_val, adm_no)
-    elif int(cmd) == 3:
-        col_val = input('Enter new Mail:=> ')
-        f_update_stm('Mail', col_val, adm_no)
-    elif int(cmd) == 4:
-        col_val = input('Enter new Date of Birth(FORMAT: YYYY-MM-DD):=> ')
-        f_update_stm('DoB', col_val, adm_no)
-    elif int(cmd) == 5:
-        col_val = input('Enter new Birth Place:=> ')
-        f_update_stm('BirthPlace', col_val, adm_no)
-    elif int(cmd) == 6:
-        col_val = input('Enter new Mother Tongue:=> ')
-        f_update_stm('MotherTongue', col_val, adm_no)
-    elif int(cmd) == 7:
-        col_val = input('Enter new Mother Name:=> ')
-        f_update_stm('MotherName', col_val, adm_no)
-    elif int(cmd) == 8:
-        col_val = input('Enter new Father Name:=> ')
-        f_update_stm('FatherName', col_val, adm_no)
-    elif int(cmd) == 9:
-        col_val = input('Enter new Nationality:=> ')
-        f_update_stm('Nationality', col_val, adm_no)
-    elif int(cmd) == 10:
-        col_val = input('Enter new Caste(SC/ST/OBC/GEN):=> ')
-        f_update_stm('Caste', col_val, adm_no)
-    elif int(cmd) == 11:
-        col_val = input('Enter new Address:=> ')
-        f_update_stm('Address', col_val, adm_no)
-    elif int(cmd) == 12:
-        col_val = input('Enter new Parent Occupation:=> ')
-        f_update_stm('ParentOccupation', col_val, adm_no)
-    elif int(cmd) == 13:
-        col_val = input('Enter new Parent Occupation Category:=> ')
-        f_update_stm('ParentOccupationCategory', col_val, adm_no)
-    elif int(cmd) == 14:
-        col_val = input('Enter new Parent Pay:=> ')
-        f_update_stm('ParentPay', col_val, adm_no)
-    elif int(cmd) == 15:
-        col_val = input('Enter new Parent Mobile:=> ')
-        f_update_stm('ParentMobile', col_val, adm_no)
-    elif int(cmd) == 16:
-        col_val = input('Enter new Parent Office Address:=> ')
-        f_update_stm('ParentOfficeAddress', col_val, adm_no)
-    elif int(cmd) == 17:
-        col_val = input('Enter new Parent Office Telephone:=> ')
-        f_update_stm('ParentOfficeTelephone', col_val, adm_no)
-    elif int(cmd) == 18:
-        col_val = input('Enter new X Last Attended Date(FORMAT: YYYY-MM-DD):=> ')
-        f_update_stm('XLastAttended', col_val, adm_no)
-    elif int(cmd) == 19:
-        col_val = input('Enter new X Medium:=> ')
-        f_update_stm('XMedium', col_val, adm_no)
-    elif int(cmd) == 20:
-        col_val = input('Enter new X Board:=> ')
-        f_update_stm('XBoard', col_val, adm_no)
-    elif int(cmd) == 21:
-        col_val = input('Enter new X Pass Year(FORMAT: YYYY):=> ')
-        f_update_stm('XPassYear', col_val, adm_no)
-    elif int(cmd) == 22:
-        col_val = input('Enter new X Roll No:=> ')
-        f_update_stm('XRollNo', col_val, adm_no)
-    elif int(cmd) == 23:
-        col_val = input('Enter new X English Marks:=> ')
-        f_update_stm('XEng', col_val, adm_no)
-    elif int(cmd) == 24:
-        col_val = input('Enter new X Maths Marks:=> ')
-        f_update_stm('XMaths', col_val, adm_no)
-    elif int(cmd) == 25:
-        col_val = input('Enter new X Science Marks:=> ')
-        f_update_stm('XScience', col_val, adm_no)
-    elif int(cmd) == 26:
-        col_val = input('Enter new X Social Marks:=> ')
-        f_update_stm('XSocial', col_val, adm_no)
-    elif int(cmd) == 27:
-        col_val = input('Enter new X 2nd Language Marks:=> ')
-        f_update_stm('XIILang', col_val, adm_no)
-    elif int(cmd) == 28:
-        col_val = input('Enter new X Total Marks:=> ')
-        f_update_stm('XTotalMarks', col_val, adm_no)
-    elif int(cmd) == 29:
-        col_val = input('Enter new X Percentage:=> ')
-        f_update_stm('XPercentage', col_val, adm_no)
-    elif int(cmd) == 30:
-        col_val = input('Enter new Subject Choice(CS/BIO):=> ')
-        f_update_stm('Sub', col_val.upper(), adm_no)
+        if not cmd.isnumeric():
+            print('\nEnter valid command\n')
+            f_update_adm()
+        elif int(cmd) == 1:
+            col_val = input('Enter new Joining Year:=> ')
+            f_update_stm('JoiningYear', col_val, adm_no)
+        elif int(cmd) == 2:
+            col_val = input('Enter new Student Name:=> ')
+            f_update_stm('StudentName', col_val, adm_no)
+        elif int(cmd) == 3:
+            col_val = input('Enter new Mail:=> ')
+            f_update_stm('Mail', col_val, adm_no)
+        elif int(cmd) == 4:
+            col_val = input('Enter new Date of Birth(FORMAT: YYYY-MM-DD):=> ')
+            f_update_stm('DoB', col_val, adm_no)
+        elif int(cmd) == 5:
+            col_val = input('Enter new Birth Place:=> ')
+            f_update_stm('BirthPlace', col_val, adm_no)
+        elif int(cmd) == 6:
+            col_val = input('Enter new Mother Tongue:=> ')
+            f_update_stm('MotherTongue', col_val, adm_no)
+        elif int(cmd) == 7:
+            col_val = input('Enter new Mother Name:=> ')
+            f_update_stm('MotherName', col_val, adm_no)
+        elif int(cmd) == 8:
+            col_val = input('Enter new Father Name:=> ')
+            f_update_stm('FatherName', col_val, adm_no)
+        elif int(cmd) == 9:
+            col_val = input('Enter new Nationality:=> ')
+            f_update_stm('Nationality', col_val, adm_no)
+        elif int(cmd) == 10:
+            col_val = input('Enter new Caste(SC/ST/OBC/GEN):=> ')
+            f_update_stm('Caste', col_val, adm_no)
+        elif int(cmd) == 11:
+            col_val = input('Enter new Address:=> ')
+            f_update_stm('Address', col_val, adm_no)
+        elif int(cmd) == 12:
+            col_val = input('Enter new Parent Occupation:=> ')
+            f_update_stm('ParentOccupation', col_val, adm_no)
+        elif int(cmd) == 13:
+            col_val = input('Enter new Parent Occupation Category(DAE/NON-DAE):=> ')
+            f_update_stm('ParentOccupationCategory', col_val, adm_no)
+        elif int(cmd) == 14:
+            col_val = input('Enter new Parent Pay:=> ')
+            f_update_stm('ParentPay', col_val, adm_no)
+        elif int(cmd) == 15:
+            col_val = input('Enter new Parent Mobile:=> ')
+            f_update_stm('ParentMobile', col_val, adm_no)
+        elif int(cmd) == 16:
+            col_val = input('Enter new Parent Office Address:=> ')
+            f_update_stm('ParentOfficeAddress', col_val, adm_no)
+        elif int(cmd) == 17:
+            col_val = input('Enter new Parent Office Telephone:=> ')
+            f_update_stm('ParentOfficeTelephone', col_val, adm_no)
+        elif int(cmd) == 18:
+            col_val = input('Enter new X Last Attended Date(FORMAT: YYYY-MM-DD):=> ')
+            f_update_stm('XLastAttended', col_val, adm_no)
+        elif int(cmd) == 19:
+            col_val = input('Enter new X Medium:=> ')
+            f_update_stm('XMedium', col_val, adm_no)
+        elif int(cmd) == 20:
+            col_val = input('Enter new X Board:=> ')
+            f_update_stm('XBoard', col_val, adm_no)
+        elif int(cmd) == 21:
+            col_val = input('Enter new X Passing Year(FORMAT: YYYY):=> ')
+            f_update_stm('XPassYear', col_val, adm_no)
+        elif int(cmd) == 22:
+            col_val = input('Enter new X Roll No:=> ')
+            f_update_stm('XRollNo', col_val, adm_no)
+        elif int(cmd) == 23:
+            col_val = input('Enter new X English Marks:=> ')
+            f_update_stm('XEng', col_val, adm_no)
+        elif int(cmd) == 24:
+            col_val = input('Enter new X Maths Marks:=> ')
+            f_update_stm('XMaths', col_val, adm_no)
+        elif int(cmd) == 25:
+            col_val = input('Enter new X Science Marks:=> ')
+            f_update_stm('XScience', col_val, adm_no)
+        elif int(cmd) == 26:
+            col_val = input('Enter new X Social Marks:=> ')
+            f_update_stm('XSocial', col_val, adm_no)
+        elif int(cmd) == 27:
+            col_val = input('Enter new X 2nd Language Marks:=> ')
+            f_update_stm('XIILang', col_val, adm_no)
+        elif int(cmd) == 28:
+            col_val = input('Enter new X Total Marks:=> ')
+            f_update_stm('XTotalMarks', col_val, adm_no)
+        elif int(cmd) == 29:
+            col_val = input('Enter new X Percentage:=> ')
+            f_update_stm('XPercentage', col_val, adm_no)
+        elif int(cmd) == 30:
+            col_val = input('Enter new Subject Choice(CS/BIO):=> ')
+            f_update_stm('Sub', col_val.upper(), adm_no)
 
-    print('Updated Succesful')
+    print('\nUpdated Succesfully')
     f_adm(acad_yr)
 
 # To delete particular student data
@@ -510,22 +488,22 @@ def f_del_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
-        f_update_adm(acad_yr)
+        f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
         f_display(res)
         print()
 
-    adm_no = input('\nEnter Admission Number to Delete Data of the Student:=> ')
+        adm_no = input('\nEnter Admission Number to Delete Data of the Student:=> ')
 
-    sql = "DELETE FROM admregister WHERE AdmNo = %s"
-    val = (adm_no, )
-    cur.execute(sql, val)
-    mydb.commit()
+        sql = "DELETE FROM admregister WHERE AdmNo = %s"
+        val = (adm_no, )
+        cur.execute(sql, val)
+        mydb.commit()
 
-    print('\nDeleted Succesfully')
+        print('\nDeleted Succesfully')
 
-    f_adm(acad_yr)
+        f_adm(acad_yr)
 
 # To enter dummy data to check all functions
 def f_dummy_data(acad_yr):
@@ -534,7 +512,6 @@ def f_dummy_data(acad_yr):
     val = [(580, acad_yr[:4], 'Tanvi Kamble', f'tanvi{acad_yr[-2:]}@gmail.com', '2005-07-18', 'Mumbai', 'Marathi', 'Sadhana' ,'Prashil', 'Indian', 'SC', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'923456{acad_yr[-2:]}', 95, 95, 95, 95, 95, 475, 95, 'CS'),(580, acad_yr[:4], 'Sarthak Dale',f'itsarthakhere{acad_yr[-2:]}@gmail.com', '2005-06-16', 'TAPS Hospital, Tarapur', 'Marathi', 'Bhavana' ,'Dilip', 'Indian', 'GEN', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'127456{acad_yr[-2:]}', 96, 85, 75, 98, 95, 465, 95, 'CS'),(580, acad_yr[:4], 'Aaditya Shirke', f'aadi{acad_yr[-2:]}@gmail.com', '2005-06-16', 'TAPS Hospital, Tarapur', 'Marathi', 'Seema' ,'Vindo', 'Indian', 'GEN', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'193156{acad_yr[-2:]}', 95, 65, 75, 85, 15, 375, 85, 'BIO'),(580, acad_yr[:4], 'Suyash Kodge', f'sush{acad_yr[-2:]}@gmail.com', '2005-07-28', 'TAPS Hospital, Tarapur', 'Marathi', 'Abha' ,'Dhannaya', 'Indian', 'GEN', '3 and 4', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'567498{acad_yr[-2:]}', 85, 99, 93, 96, 85, 495, 98, 'CS'),(580, acad_yr[:4], 'Dhruv Patil', f'dhu{acad_yr[-2:]}@gmail.com', '2005-03-28', 'TAPS Hospital, Tarapur', 'Marathi', 'Arushi' ,'Hemant', 'Indian', 'OBC', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'569408{acad_yr[-2:]}', 15, 35, 45, 15, 75, 205, 65, 'BIO'),(580, acad_yr[:4], 'Kuldeep', f'kulu{acad_yr[-2:]}@gmail.com', '2005-01-28', 'TAPS Hospital, Tarapur', 'Hindi', 'Sahana' ,'Harshal', 'Indian', 'SC', '3 and 4', 'Govt Service', 'DAE', 800000, '6539803893', 'Uttrakhand', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'610098{acad_yr[-2:]}', 95, 75, 95, 95, 15,135, 75, 'BIO'),(580, acad_yr[:4], 'Chetas Mohite', f'chets{acad_yr[-2:]}@gmail.com', '2005-07-28', 'TAPS Hospital, Tarapur', 'Marathi', 'Pushpa' ,'Narayan', 'Indian', 'GEN', 'Boisar', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'854498{acad_yr[-2:]}', 85, 99, 99, 25, 55, 479, 95, 'BIO'),(580, acad_yr[:4], 'Anirudhha Temak', f'ani{acad_yr[-2:]}@gmail.com', '2005-07-28', 'TAPS Hospital, Tarapur', 'Marathi', 'Rishi' ,'Vishwas', 'Indian', 'SC', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'567434{acad_yr[-2:]}', 15, 25, 55, 15, 75, 275, 99, 'CS'),(580, acad_yr[:4], 'Bhumit Humbhire', f'bhumi{acad_yr[-2:]}@gmail.com', '2005-07-28', 'TAPS Hospital, Tarapur', 'Marathi', 'Jhora' ,'Abdul', 'Indian', 'GEN', '3 and 4', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'067498{acad_yr[-2:]}', 95, 95, 95, 95, 65, 165, 95, 'CS'),(580, acad_yr[:4], 'Aarya Patil', f'aarya{acad_yr[-2:]}@gmail.com', '2005-03-24', 'TAPS Hospital, Tarapur', 'Marathi', 'Rupali' ,'Nilesh', 'Indian', 'OBC', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'570498{acad_yr[-2:]}', 85, 95, 99, 99, 99, 490, 97, 'BIO'),(580, acad_yr[:4], 'Athulya Anilkumar', f'ak{acad_yr[-2:]}@gmail.com', '2005-07-28', 'TAPS Hospital, Tarapur', 'Malayalam', 'Shini' ,'Anilkumar KC', 'Indian', 'GEN', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'967468{acad_yr[-2:]}', 99, 75, 15, 85, 95, 468, 95, 'CS'),(580, acad_yr[:4], 'Anant Jaiswara', f'anantjaiswara05{acad_yr[-2:]}@gmail.com', '2005-07-21', 'TAPS Hospital, Tarapur', 'Hindi', 'Shakuntala' ,'Durgesh', 'Indian', 'SC', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'132465{acad_yr[-2:]}', 90, 90, 90, 90, 90, 450, 92, 'CS'),(580, acad_yr[:4], 'Amit Mastud', f'amitmastud07{acad_yr[-2:]}@gmail.com', '2005-07-17', 'TAPS Hospital, Tarapur', 'Marathi', 'Pinky' ,'Dattarya', 'Indian', 'SC', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', '2021', f'143265{acad_yr[-2:]}', 91, 91, 91, 91, 91, 455, 93, 'BIO'),(580, acad_yr[:4], 'Krish Dhodi', f'krishdhodi12{acad_yr[-2:]}@gmail.com', '2005-05-12', 'TAPS Hospital, Tarapur', 'Gujrati', 'Sita' ,'Sunil', 'Indian', 'St', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'123745{acad_yr[-2:]}', 92, 92, 92, 92, 92, 460, 94, 'BIO'),(580, acad_yr[:4], 'Kedar Lokhande', f'kdlokhande{acad_yr[-2:]}@gmail.com', '2005-11-18', 'TAPS Hospital, Tarapur', 'Marathi', 'Anita' ,'Damodar', 'Indian', 'OBC', 'BARC', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'152367{acad_yr[-2:]}', 93, 93, 93, 93, 93, 465, 94, 'BIO'),(580, acad_yr[:4], 'Harshal Gunjal', f'harshalop{acad_yr[-2:]}@gmail.com', '2005-08-30', 'TAPS Hospital, Tarapur', 'Marathi', 'Sunita' ,'Shashikant', 'Indian', 'GEN', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'127643{acad_yr[-2:]}', 96, 96, 96, 96, 96, 480, 97, 'CS'),(580, acad_yr[:4], 'Mayank Sharma', f'mayanks{acad_yr[-2:]}@gmail.com', '2005-11-05', 'TAPS Hospital, Tarapur', 'Hindi', 'Soniya' ,'Mausam', 'Indian', 'GEN', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'143765{acad_yr[-2:]}', 90, 90, 90, 90, 90, 450, 92, 'CS'),(580, acad_yr[:4], 'Shashank Mishra', f'smishra{acad_yr[-2:]}@gmail.com', '2005-05-25', 'TAPS Hospital, Tarapur', 'Hindi', 'Swati' ,'Rajesh', 'Indian', 'St', 'TAPS', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'134658{acad_yr[-2:]}', 91, 91, 91, 91, 91, 455, 93, 'CS'),(580, acad_yr[:4], 'Ruchita Waghmare', f'ruchi{acad_yr[-2:]}@gmail.com', '2005-12-25', 'TAPS Hospital, Tarapur', 'Marathi', 'Amita' ,'Nishant', 'Indian', 'OBC', '3&4', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'132645{acad_yr[-2:]}', 93, 95, 96, 95, 96, 475, 95, 'CS'),(580, acad_yr[:4], 'Avdhi Gujrati', f'avg{acad_yr[-2:]}@gmail.com', '2005-09-23', 'TAPS Hospital, Tarapur', 'Gujrati', 'Jagruti' ,'Akhilesh', 'Indian', 'GEN', '3&4', 'Govt Service', 'DAE', 800000, '6539803893', 'Pasthal', '123456', f'{acad_yr[:4]}-02-19', 'English', 'CBSE', acad_yr[:4], f'152438{acad_yr[-2:]}', 94, 95, 96, 95, 95, 475, 95, 'BIO')]
 
     for i in val:
-        adm_data = {}
         adm_data = {
             'AdmNo' : i[0],
             'JoiningYear': i[1],
@@ -570,13 +547,11 @@ def f_dummy_data(acad_yr):
         }
 
         adm_datal.append(adm_data)
-
     f_data_upload_adm(adm_datal)
 
 # Main home function to control all operations
 def f_panel():
     f_display(home)
-
     cmd = input('\nEnter command:=> ')
 
     if not cmd.isnumeric():
@@ -591,6 +566,7 @@ def f_panel():
                 acad_yr = ayr[:4] + ayr[5:]
             else:
                 print('\nEnter valid academic year.')
+        f_create_table_adm()
         f_adm(acad_yr)
     elif int(cmd) == 2:
         f_about()
@@ -607,16 +583,13 @@ db = 'csproj3'
 
 #connecting mysql database
 try:
-    # print('\nConnecting Database...\n')
     mydb = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
         password = 'mysqlpw',
         database = db
     )
-    # print('\n...Database Connected\n')
 except Error:
-    # print('\n...No database found\n')
     mydb = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
@@ -625,31 +598,22 @@ except Error:
     cur = mydb.cursor()
     cur.execute(f'CREATE DATABASE {db}')
     cur.execute(f'USE {db}')
-    # print(f'\n...Database {db} Created\n')
 
 cur = mydb.cursor()
 
 # Starting Interface
-
 print('\n+--------------+')
 print('| JC REGISTRAL |')
 print('+--------------+\n')
-
-print('====================================================================')
-print('\nWelcome to JC REGISTRAL\nA tool for admission process of Junior College Students\n')
-print('====================================================================')
+print('==========================================================================================')
+print('\nWelcome to JC REGISTRAL\nA tool created for managing data for the admission process of Junior College(JC) students.\n')
+print('==========================================================================================')
 
 # command lists
 home = [['Command', 'Function'],
     ['1','Check/Enter Admission Details for XI'],
     ['2','About'],
     ['3','Exit']]
-
-xi_home = [['Command', 'Function'],
-    ['1','Check/Enter Admission Details'],
-    ['2','Display Fees Details'],
-    ['3','Generate Report Card'],
-    ['4','Back to Home']]
 
 xi_adm = [['Command', 'Function'],
     ['1','Enter Admission Details'],
@@ -658,13 +622,6 @@ xi_adm = [['Command', 'Function'],
     ['4','Delete Particular Student\'s Admission Details'],
     ['5','Enter Dummy Data'],
     ['6','Back to Home']]
-
-xii_home = [['Command', 'Function'],
-    ['1','Check/Enter Fees Details'],
-    ['2','Generate Report Card'],
-    ['3','Check Rank List'],
-    ['4','Check Transfer Certificate'],
-    ['5','Back to Home']]
 
 sub_c = [['Command', 'Subjects'],
     ['1', 'Physics, Chemistry, Maths, English, Computer Science'],
@@ -702,12 +659,4 @@ adm_up = [['Command', 'To Change'],
 ['29', 'X Percentage'],
 ['30', 'Subject Choice']]
 
-
-# print('\n...Running the panel\n')
 f_panel()
-
-# msg to show for no adm student
-# display horizontal
-# remove roll no
-# display align right
-#$ about stm
