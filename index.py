@@ -172,7 +172,7 @@ def f_data_entry_adm(acad_yr):
     f_data_upload_adm(adm_datal)
 
 # To insert data to the table
-def f_data_upload_adm(adm_datal):
+def f_data_upload_adm(adm_datal, flag=True):
     tb_name = "admregister"
 
     for adm_data in adm_datal:
@@ -232,7 +232,7 @@ def f_data_upload_adm(adm_datal):
             print()
             f_data_entry_adm(adm_data['JoiningYear'])
 
-    flag = True
+    # flag = True
     while flag:
         choice = input('Want to enter data for one more student? (Yes/No): ')
         if choice.lower() == "yes":
@@ -555,7 +555,9 @@ def f_dummy_data(acad_yr):
         }
 
         adm_datal.append(adm_data)
-    f_data_upload_adm(adm_datal)
+    f_data_upload_adm(adm_datal, False)
+    print(f'Data Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
+    f_adm(acad_yr)
 
 # Main home function to control all operations
 def f_panel():
