@@ -295,6 +295,7 @@ def f_display_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
+        time.sleep(1)
         f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
@@ -557,6 +558,7 @@ def f_dummy_data(acad_yr):
         adm_datal.append(adm_data)
     f_data_upload_adm(adm_datal, False)
     print(f'Data Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
+    time.sleep(1)
     f_adm(acad_yr)
 
 # Main home function to control all operations
@@ -581,8 +583,13 @@ def f_panel():
     elif int(cmd) == 2:
         f_about()
     elif int(cmd) == 3:
-        print('\nThank You.')
-        print('Visit Again.:)\n')
+        print('\n+-------------------+')
+        print('|                   |')
+        print('|     Thank You     |')
+        print('|                   |')
+        print('|  Visit Again  :)  |')
+        print('|                   |')
+        print('+-------------------+')
     else:
         print('\nEnter valid command\n')
         f_panel()
