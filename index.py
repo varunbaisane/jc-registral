@@ -53,6 +53,7 @@ def f_adm(acad_yr):
 
     if not cmd.isnumeric():
         print('\nEnter valid command\n')
+        time.sleep(0.5)
         f_adm(acad_yr)
     elif int(cmd) == 1:
         f_data_entry_adm(acad_yr)
@@ -68,6 +69,7 @@ def f_adm(acad_yr):
         f_panel()
     else:
         print('\nEnter valid command\n')
+        time.sleep(0.5)
         f_adm(acad_yr)
 
 # To create table
@@ -82,94 +84,99 @@ def f_create_table_adm():
 
 # To enter all required data
 def f_data_entry_adm(acad_yr):
-    print('\n+------------------+')
-    print('| Personal Details |')
-    print('+------------------+')
+    try:
+        print('\n+------------------+')
+        print('| Personal Details |')
+        print('+------------------+')
 
-    stu_name = input("Enter Student's Full Name: ")
-    stu_mail = input("Enter Student's Email ID: ")
-    stu_dob = input("Enter Date of Birth(FORMAT: YYYY-MM-DD): ")
-    stu_bplace = input("Enter Place of Birth: ")
-    stu_motong =  input("Enter Mother Tongue: ")
-    stu_moname =  input("Enter Mother's Name: ")
-    stu_faname=  input("Enter Father's Name: ")
-    stu_nat = input("Enter Nationality: ")
-    stu_caste = input("Enter Student's Caste(SC/ST/OBC/Gen): ")
-    stu_add = input("Enter Student's Address: ")
+        stu_name = input("Enter Student's Full Name (Max. 30 Character): ")
+        stu_mail = input("Enter Student's Email ID (Max. 30 Character): ")
+        stu_dob = input("Enter Date of Birth(FORMAT: YYYY-MM-DD): ")
+        stu_bplace = input("Enter Place of Birth: ")
+        stu_motong =  input("Enter Mother Tongue: ")
+        stu_moname =  input("Enter Mother's Name (Max. 30 Character): ")
+        stu_faname=  input("Enter Father's Name (Max. 30 Character): ")
+        stu_nat = input("Enter Nationality: ")
+        stu_caste = input("Enter Student's Caste(SC/ST/OBC/Gen): ")
+        stu_add = input("Enter Student's Address: ")
 
-    print('\n+-----------------+')
-    print('| Parents Details |')
-    print('+-----------------+')
+        print('\n+-----------------+')
+        print('| Parents Details |')
+        print('+-----------------+')
 
-    pa_occ = input("Enter Parents' Occupation: ")
-    pa_occcat = input("Enter Parents' Occupation Category(DAE/NON-DAE): ")
-    pa_pay = int(input("Enter Parents' Annual Income: "))
-    pa_mob = input("Enter Parents' Mobile Number: ")
-    pa_oadd = input("Enter Parents' Office Address: ")
-    pa_otel = int(input("Enter Parents' Office Telephone Number: "))
+        pa_occ = input("Enter Parents' Occupation: ")
+        pa_occcat = input("Enter Parents' Occupation Category(DAE/NON-DAE): ")
+        pa_pay = int(input("Enter Parents' Annual Income: "))
+        pa_mob = input("Enter Parents' Mobile Number: ")
+        pa_oadd = input("Enter Parents' Office Address: ")
+        pa_otel = int(input("Enter Parents' Office Telephone Number: "))
 
-    print('\n+-----------------+')
-    print('| Class X Details |')
-    print('+-----------------+')
+        print('\n+-----------------+')
+        print('| Class X Details |')
+        print('+-----------------+')
 
-    x_lastatt = input("Enter School Last Attended Date(FORMAT: YYYY-MM-DD): ")
-    x_med = input("Enter Medium Of Instruction: ")
-    x_board = input("Enter Examination Board: ")
-    x_passyr = int(input("Enter Passing Year(FORMAT: YYYY): "))
-    x_rollno = int(input("Enter Board Roll Number: "))
-    x_eng = int(input("Enter marks obtained in English: "))
-    x_maths = int(input("Enter marks obtained in Maths: "))
-    x_sci = int(input("Enter marks obtained in Science: "))
-    x_ss = int(input("Enter marks obtained in Social Science: "))
-    x_2lang = int(input("Enter marks obtained in Second Language: "))
-    x_totmrks = int(input("Enter Total marks obtained: "))
-    x_per = int(input("Enter 10th percentage: "))
+        x_lastatt = input("Enter School Last Attended Date(FORMAT: YYYY-MM-DD): ")
+        x_med = input("Enter Medium Of Instruction: ")
+        x_board = input("Enter Examination Board: ")
+        x_passyr = int(input("Enter Passing Year(FORMAT: YYYY): "))
+        x_rollno = int(input("Enter Board Roll Number: "))
+        x_eng = int(input("Enter marks obtained in English: "))
+        x_maths = int(input("Enter marks obtained in Maths: "))
+        x_sci = int(input("Enter marks obtained in Science: "))
+        x_ss = int(input("Enter marks obtained in Social Science: "))
+        x_2lang = int(input("Enter marks obtained in Second Language: "))
+        x_totmrks = int(input("Enter Total marks obtained: "))
+        x_per = int(input("Enter 10th percentage: "))
 
-    f_display(sub_c)
-    sub_choice = input("Enter Sub Choice(1/2): ")
-    if sub_choice == "2":
-        sub_choice = "BIO"
-    else:
-        sub_choice = "CS"
-    adm_no = 580
+        f_display(sub_c)
+        sub_choice = input("Enter Sub Choice(1/2): ")
+        if sub_choice == "2":
+            sub_choice = "BIO"
+        else:
+            sub_choice = "CS"
+        adm_no = 580
 
-    adm_data = {
-        'AdmNo' : adm_no,
-        'JoiningYear': acad_yr[:4],
-        'StudentName': stu_name,
-        'Mail': stu_mail,
-        'DoB': stu_dob,
-        'BirthPlace': stu_bplace,
-        'MotherTongue': stu_motong,
-        'MotherName': stu_moname,
-        'FatherName': stu_faname,
-        'Nationality': stu_nat,
-        'Caste': stu_caste,
-        'Address': stu_add,
-        'ParentOccupation': pa_occ,
-        'ParentOccupationCategory': pa_occcat,
-        'ParentPay': pa_pay,
-        'ParentMobile': pa_mob,
-        'ParentOfficeAddress': pa_oadd,
-        'ParentOfficeTelephone': pa_otel,
-        'XLastAttended': x_lastatt,
-        'XMedium': x_med,
-        'XBoard': x_board,
-        'XPassYear': x_passyr,
-        'XRollNo': x_rollno,
-        'XEng': x_eng,
-        'XMaths': x_maths,
-        'XScience': x_sci,
-        'XSocial': x_ss,
-        'XIILang': x_2lang,
-        'XTotalMarks': x_totmrks,
-        'XPercentage': x_per,
-        'Sub': sub_choice
-    }
+        adm_data = {
+            'AdmNo' : adm_no,
+            'JoiningYear': acad_yr[:4],
+            'StudentName': stu_name,
+            'Mail': stu_mail,
+            'DoB': stu_dob,
+            'BirthPlace': stu_bplace,
+            'MotherTongue': stu_motong,
+            'MotherName': stu_moname,
+            'FatherName': stu_faname,
+            'Nationality': stu_nat,
+            'Caste': stu_caste,
+            'Address': stu_add,
+            'ParentOccupation': pa_occ,
+            'ParentOccupationCategory': pa_occcat,
+            'ParentPay': pa_pay,
+            'ParentMobile': pa_mob,
+            'ParentOfficeAddress': pa_oadd,
+            'ParentOfficeTelephone': pa_otel,
+            'XLastAttended': x_lastatt,
+            'XMedium': x_med,
+            'XBoard': x_board,
+            'XPassYear': x_passyr,
+            'XRollNo': x_rollno,
+            'XEng': x_eng,
+            'XMaths': x_maths,
+            'XScience': x_sci,
+            'XSocial': x_ss,
+            'XIILang': x_2lang,
+            'XTotalMarks': x_totmrks,
+            'XPercentage': x_per,
+            'Sub': sub_choice
+        }
 
-    adm_datal = []
-    adm_datal.append(adm_data)
-    f_data_upload_adm(adm_datal)
+        adm_datal = []
+        adm_datal.append(adm_data)
+        f_data_upload_adm(adm_datal)
+    except:
+        print('\nPlease enter valid data.\n')
+        time.sleep(0.5)
+        f_adm(acad_yr)
 
 # To insert data to the table
 def f_data_upload_adm(adm_datal, flag=True):
@@ -230,7 +237,7 @@ def f_data_upload_adm(adm_datal, flag=True):
             print('\nPlease enter valid information.')
             print(e)
             print()
-            f_data_entry_adm(adm_data['JoiningYear'])
+            f_adm(adm_data['JoiningYear'])
 
     # flag = True
     while flag:
@@ -295,7 +302,7 @@ def f_display_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
-        time.sleep(1)
+        time.sleep(0.5)
         f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
@@ -380,6 +387,7 @@ def f_update_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
+        time.sleep(0.5)
         f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
@@ -394,6 +402,7 @@ def f_update_adm(acad_yr):
 
         if not cmd.isnumeric():
             print('\nEnter valid command\n')
+            time.sleep(0.5)
             f_update_adm()
         elif int(cmd) == 1:
             col_val = input('Enter new Joining Year:=> ')
@@ -435,7 +444,7 @@ def f_update_adm(acad_yr):
             col_val = input('Enter new Parent Occupation Category(DAE/NON-DAE):=> ')
             f_update_stm('ParentOccupationCategory', col_val, adm_no)
         elif int(cmd) == 14:
-            col_val = input('Enter new Parent Pay:=> ')
+            col_val = input('Enter new Parent Annual Income:=> ')
             f_update_stm('ParentPay', col_val, adm_no)
         elif int(cmd) == 15:
             col_val = input('Enter new Parent Mobile:=> ')
@@ -486,8 +495,8 @@ def f_update_adm(acad_yr):
             col_val = input('Enter new Subject Choice(CS/BIO):=> ')
             f_update_stm('Sub', col_val.upper(), adm_no)
 
-    print('\nUpdated Succesfully')
-    f_adm(acad_yr)
+        print('\nUpdated Succesfully')
+        f_adm(acad_yr)
 
 # To delete particular student data
 def f_del_adm(acad_yr):
@@ -497,6 +506,7 @@ def f_del_adm(acad_yr):
 
     if len(res) == 0:
         print(f'\nNo students found.')
+        time.sleep(0.5)
         f_adm(acad_yr)
     else:
         res.insert(0, ['Admission Number', 'Name of the Student'])
@@ -556,8 +566,20 @@ def f_dummy_data(acad_yr):
         }
 
         adm_datal.append(adm_data)
-    f_data_upload_adm(adm_datal, False)
-    print(f'Data Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
+    qry = 'SELECT Mail FROM admregister'
+    cur.execute(qry)
+    res = cur.fetchall()
+    
+    maillist = []
+    for i in res:
+        maillist.append(i[0])
+
+    if val[0][3] in maillist:
+        print(f'\nDummy Data Already Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
+    else:
+        f_data_upload_adm(adm_datal, False)
+        print(f'Data Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
+
     time.sleep(1)
     f_adm(acad_yr)
 
@@ -568,6 +590,7 @@ def f_panel():
 
     if not cmd.isnumeric():
         print('\nEnter valid command\n')
+        time.sleep(0.5)
         f_panel()
     elif int(cmd) == 1:
         flag = True
@@ -592,6 +615,7 @@ def f_panel():
         print('+-------------------+')
     else:
         print('\nEnter valid command\n')
+        time.sleep(0.5)
         f_panel()
 
 #* CODE BEGINS
