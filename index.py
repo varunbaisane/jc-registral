@@ -620,27 +620,17 @@ def f_panel():
 
 #* CODE BEGINS
 
-db = 'csproj3'
+db = 'csproj'
 
-#connecting mysql database
-try:
-    mydb = mysql.connector.connect(
-        host = 'localhost',
-        user = 'root',
-        password = 'mysqlpw',
-        database = db
-    )
-except Error:
-    mydb = mysql.connector.connect(
+mydb = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
         password = 'mysqlpw'
     )
-    cur = mydb.cursor()
-    cur.execute(f'CREATE DATABASE {db}')
-    cur.execute(f'USE {db}')
 
 cur = mydb.cursor()
+cur.execute(f'CREATE DATABASE IF NOT EXISTS {db}')
+cur.execute(f'USE {db}')
 
 # Starting Interface
 print('\n+--------------+')
@@ -701,3 +691,5 @@ adm_up = [['Command', 'To Change'],
 ['30', 'Subject Choice']]
 
 f_panel()
+
+#$ ask for pw
