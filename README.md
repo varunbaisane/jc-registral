@@ -19,4 +19,4 @@ JC Registral has a bunch of features for easily managing data for the process of
 
 - [Varun Baisane](https://github.com/varunbaisane)
 - [Anant Jaiswara]()
-- [Sarthak Dale]()
+- [Sarthak Dale](https://www.instagram.com/its.sarthak.here/)
