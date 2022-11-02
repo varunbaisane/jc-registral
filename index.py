@@ -580,7 +580,7 @@ def f_dummy_data(acad_yr):
         f_data_upload_adm(adm_datal, False)
         print(f'Data Added for Academic Year:{acad_yr[:4]}-{acad_yr[4:]}')
 
-    time.sleep(1)
+    time.sleep(1.5)
     f_adm(acad_yr)
 
 # Main home function to control all operations
@@ -620,18 +620,6 @@ def f_panel():
 
 #* CODE BEGINS
 
-db = 'csproj'
-
-mydb = mysql.connector.connect(
-        host = 'localhost',
-        user = 'root',
-        password = 'mysqlpw'
-    )
-
-cur = mydb.cursor()
-cur.execute(f'CREATE DATABASE IF NOT EXISTS {db}')
-cur.execute(f'USE {db}')
-
 # Starting Interface
 print('\n+--------------+')
 print('| JC REGISTRAL |')
@@ -639,6 +627,19 @@ print('+--------------+\n')
 print('==========================================================================================')
 print('\nWelcome to JC REGISTRAL\nA tool created for managing data for the admission process of Junior College(JC) students.\n')
 print('==========================================================================================')
+
+pw = input("\nEnter your MySQL Password: ")
+db = 'csproj'
+
+mydb = mysql.connector.connect(
+        host = 'localhost',
+        user = 'root',
+        password = pw
+    )
+
+cur = mydb.cursor()
+cur.execute(f'CREATE DATABASE IF NOT EXISTS {db}')
+cur.execute(f'USE {db}')
 
 # command lists
 home = [['Command', 'Function'],
@@ -691,5 +692,3 @@ adm_up = [['Command', 'To Change'],
 ['30', 'Subject Choice']]
 
 f_panel()
-
-#$ ask for pw
